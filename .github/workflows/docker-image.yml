@@ -1,11 +1,9 @@
 name: Docker Image for TCP Endpoint check exporter
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   push:
-    branches: [ "master" ]
-    paths-ignore:
-      - '.github/workflows/**'
-  pull_request:
     branches: [ "master" ]
     paths-ignore:
       - '.github/workflows/**'
@@ -47,13 +45,13 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          maclucky/tcp-endpoint-check-exporter
-          ghcr.io/mac-lucky/tcp-endpoint-check-exporter
+          maclucky/caddy-cloudflare
+          ghcr.io/mac-lucky/caddy-cloudflare
 
     - name: Get latest version tag from Docker Hub
       id: get_latest_version
       run: |
-        LATEST_TAG=$(curl -s "https://registry.hub.docker.com/v2/repositories/maclucky/tcp-endpoint-check-exporter/tags?page_size=100" | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
+        LATEST_TAG=$(curl -s "https://registry.hub.docker.com/v2/repositories/maclucky/caddy-cloudflare/tags?page_size=100" | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
         echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
 
     - name: Increment version
@@ -73,9 +71,9 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          maclucky/tcp-endpoint-check-exporter:${{ env.NEW_VERSION }}
-          maclucky/tcp-endpoint-check-exporter:latest
-          ghcr.io/mac-lucky/tcp-endpoint-check-exporter:${{ env.NEW_VERSION }}
-          ghcr.io/mac-lucky/tcp-endpoint-check-exporter:latest
+          maclucky/caddy-cloudflare:${{ env.NEW_VERSION }}
+          maclucky/caddy-cloudflare:latest
+          ghcr.io/mac-lucky/caddy-cloudflare:${{ env.NEW_VERSION }}
+          ghcr.io/mac-lucky/caddy-cloudflare:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
