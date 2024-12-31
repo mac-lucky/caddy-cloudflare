@@ -1,4 +1,4 @@
-name: Docker Image for TCP Endpoint check exporter
+name: Docker Image for Caddy with Cloudflare DNS
 
 on:
   schedule:
@@ -9,8 +9,7 @@ on:
       - '.github/workflows/**'
 
 jobs:
-
-  build:
+  check-and-build:
     environment: maclucky
     permissions:
       contents: write
@@ -19,13 +18,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Get latest Caddy version
+      id: caddy_version
+      run: |
+        CADDY_VERSION=$(curl -s "https://api.github.com/repos/caddyserver/caddy/releases/latest" | jq -r .tag_name | sed 's/v//')
+        echo "CADDY_VERSION=${CADDY_VERSION}" >> $GITHUB_ENV
+        
+    - name: Check current version in Docker Hub
+      id: check_version
+      run: |
+        CURRENT_VERSION=$(curl -s "https://registry.hub.docker.com/v2/repositories/maclucky/caddy-cloudflare/tags" | jq -r '.results[].name' | grep "^${CADDY_VERSION}$" || echo "")
+        if [ -z "$CURRENT_VERSION" ]; then
+          echo "BUILD_NEEDED=true" >> $GITHUB_ENV
+        else
+          echo "BUILD_NEEDED=false" >> $GITHUB_ENV
+        fi
+
     - name: Log in to Docker Hub
+      if: env.BUILD_NEEDED == 'true'
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     
     - name: Login to GitHub Container Registry
+      if: env.BUILD_NEEDED == 'true'
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
@@ -33,47 +51,25 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up QEMU
+      if: env.BUILD_NEEDED == 'true'
       uses: docker/setup-qemu-action@v3
     
     - name: Set up Docker Buildx
+      if: env.BUILD_NEEDED == 'true'
       uses: docker/setup-buildx-action@v3
       with:
         buildkitd-flags: --debug
 
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: |
-          maclucky/caddy-cloudflare
-          ghcr.io/mac-lucky/caddy-cloudflare
-
-    - name: Get latest version tag from Docker Hub
-      id: get_latest_version
-      run: |
-        LATEST_TAG=$(curl -s "https://registry.hub.docker.com/v2/repositories/maclucky/caddy-cloudflare/tags?page_size=100" | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
-        echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
-
-    - name: Increment version
-      id: increment_version
-      run: |
-        VERSION=${{ env.LATEST_TAG }}
-        if [ -z "$VERSION" ]; then
-          NEW_VERSION="1.0.0"
-        else
-          NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{$NF++;print}')
-        fi
-        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
-    - name: Build and push to Docker Hub
+    - name: Build and push
+      if: env.BUILD_NEEDED == 'true'
       uses: docker/build-push-action@v6
       with:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          maclucky/caddy-cloudflare:${{ env.NEW_VERSION }}
+          maclucky/caddy-cloudflare:${{ env.CADDY_VERSION }}
           maclucky/caddy-cloudflare:latest
-          ghcr.io/mac-lucky/caddy-cloudflare:${{ env.NEW_VERSION }}
+          ghcr.io/mac-lucky/caddy-cloudflare:${{ env.CADDY_VERSION }}
           ghcr.io/mac-lucky/caddy-cloudflare:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
