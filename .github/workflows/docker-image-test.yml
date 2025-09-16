@@ -9,6 +9,10 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   check-and-build:
     uses: mac-lucky/actions-shared-workflows/.github/workflows/weekly-docker-builder-reusable.yml@master
