@@ -10,67 +10,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-and-build:
-    environment: maclucky
-    permissions:
-      contents: write
-      packages: write
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Get latest Caddy version
-      id: caddy_version
-      run: |
-        CADDY_VERSION=$(curl -s "https://api.github.com/repos/caddyserver/caddy/releases/latest" | jq -r .tag_name | sed 's/v//')
-        echo "CADDY_VERSION=${CADDY_VERSION}" >> $GITHUB_ENV
-        
-    - name: Check current version in Docker Hub
-      id: check_version
-      run: |
-        CURRENT_VERSION=$(curl -s "https://registry.hub.docker.com/v2/repositories/maclucky/caddy-cloudflare/tags" | jq -r '.results[].name' | grep "^${CADDY_VERSION}$" || echo "")
-        if [ -z "$CURRENT_VERSION" ]; then
-          echo "BUILD_NEEDED=true" >> $GITHUB_ENV
-        else
-          echo "BUILD_NEEDED=false" >> $GITHUB_ENV
-        fi
-
-    - name: Log in to Docker Hub
-      if: env.BUILD_NEEDED == 'true'
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-    
-    - name: Login to GitHub Container Registry
-      if: env.BUILD_NEEDED == 'true'
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Set up QEMU
-      if: env.BUILD_NEEDED == 'true'
-      uses: docker/setup-qemu-action@v3
-    
-    - name: Set up Docker Buildx
-      if: env.BUILD_NEEDED == 'true'
-      uses: docker/setup-buildx-action@v3
-      with:
-        buildkitd-flags: --debug
-
-    - name: Build and push
-      if: env.BUILD_NEEDED == 'true'
-      uses: docker/build-push-action@v6
-      with:
-        platforms: linux/amd64,linux/arm64
-        push: true
-        tags: |
-          maclucky/caddy-cloudflare:${{ env.CADDY_VERSION }}
-          maclucky/caddy-cloudflare:latest
-          ghcr.io/mac-lucky/caddy-cloudflare:${{ env.CADDY_VERSION }}
-          ghcr.io/mac-lucky/caddy-cloudflare:latest
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+  build:
+    uses: mac-lucky/actions-shared-workflows/.github/workflows/docker-cicd-reusable.yml@master
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    with:
+      app_name: "caddy-cloudflare"
+      dockerhub_image: "maclucky/caddy-cloudflare"
+      ghcr_image: "ghcr.io/mac-lucky/caddy-cloudflare"
+      upstream_repo: "caddyserver/caddy"
+      version_strip_prefix: "v"
+      build_arg_name: "CADDY_VERSION"
+      enable_version_check: true
+      enable_schedule_build: true
+      enable_security_scan: true
+      platforms: "linux/amd64,linux/arm64"
