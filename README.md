@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/maclucky/caddy-cloudflare)](https://hub.docker.com/r/maclucky/caddy-cloudflare)
 [![Docker Image Version](https://img.shields.io/docker/v/maclucky/caddy-cloudflare/latest)](https://hub.docker.com/r/maclucky/caddy-cloudflare/tags)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mac-lucky/caddy-cloudflare/docker-image.yml)](https://github.com/mac-lucky/caddy-cloudflare/actions)
+[![GitHub Actions Workflow Status](https://github.com/mac-lucky/caddy-cloudflare/actions/workflows/docker-image.yml/badge.svg)](https://github.com/mac-lucky/caddy-cloudflare/actions/workflows/docker-image.yml)
 
 This Docker image extends the official Caddy server with Cloudflare DNS plugin support for automated HTTPS certificate management.
 
