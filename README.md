@@ -3,7 +3,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/maclucky/caddy-cloudflare)](https://hub.docker.com/r/maclucky/caddy-cloudflare)
 [![Docker Image Version](https://img.shields.io/docker/v/maclucky/caddy-cloudflare/latest)](https://hub.docker.com/r/maclucky/caddy-cloudflare/tags)
 [![GitHub Actions Workflow Status](https://github.com/mac-lucky/caddy-cloudflare/actions/workflows/docker-image.yml/badge.svg)](https://github.com/mac-lucky/caddy-cloudflare/actions/workflows/docker-image.yml)
-[![Platform](https://img.shields.io/badge/platform-amd64%20%7C%20arm64-blue)](https://hub.docker.com/r/maclucky/caddy-cloudflare/tags)
+[![Platform](https://img.shields.io/badge/platform-amd64%20%7C%20arm64-blue)](https://github.com/mac-lucky/caddy-cloudflare/pkgs/container/caddy-cloudflare)
 
 This Docker image extends the official Caddy server with Cloudflare DNS plugin support for automated HTTPS certificate management.
 
@@ -18,9 +18,9 @@ This Docker image extends the official Caddy server with Cloudflare DNS plugin s
 ### Pull the Image
 
 ```bash
-docker pull maclucky/caddy-cloudflare:latest
-# or
 docker pull ghcr.io/mac-lucky/caddy-cloudflare:latest
+# or
+docker pull maclucky/caddy-cloudflare:latest
 ```
 
 ### Running the Container
@@ -33,7 +33,7 @@ docker run -d \
   -v $PWD/Caddyfile:/etc/caddy/Caddyfile \
   -v caddy_data:/data \
   -v caddy_config:/config \
-  maclucky/caddy-cloudflare:latest
+  ghcr.io/mac-lucky/caddy-cloudflare:latest
 ```
 
 ### Example Caddyfile with Cloudflare DNS Challenge
