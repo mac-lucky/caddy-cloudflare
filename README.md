@@ -15,7 +15,6 @@ This Docker image extends the official Caddy server with Cloudflare DNS plugin a
 - **Rate Limiting** - Protection against brute force and DDoS attacks
 - **CrowdSec Bouncer** - Community-driven threat intelligence
 - **GeoIP Blocking** - Block requests by country
-- **AI/Cloud Defender** - Block AI scrapers and cloud service IPs
 
 ## Included Plugins
 
@@ -25,7 +24,6 @@ This Docker image extends the official Caddy server with Cloudflare DNS plugin a
 | [mholt/caddy-ratelimit](https://github.com/mholt/caddy-ratelimit) | Sliding window rate limiting |
 | [hslatman/caddy-crowdsec-bouncer](https://github.com/hslatman/caddy-crowdsec-bouncer) | CrowdSec integration |
 | [porech/caddy-maxmind-geolocation](https://github.com/porech/caddy-maxmind-geolocation) | GeoIP-based filtering |
-| [JasonLovesDoggo/caddy-defender](https://github.com/JasonLovesDoggo/caddy-defender) | AI/cloud IP blocking |
 
 ## Usage
 
@@ -144,21 +142,6 @@ example.com {
 }
 ```
 
-### AI/Cloud Defender
-
-Block AI scrapers and cloud service IPs:
-
-```caddyfile
-example.com {
-    defender block {
-        ranges openai deepseek githubcopilot aws gcloud azurepubliccloud
-    }
-    reverse_proxy backend:8080
-}
-```
-
-Available ranges: `openai`, `deepseek`, `githubcopilot`, `aws`, `gcloud`, `azurepubliccloud`, and more.
-
 ### Complete Security Stack Example
 
 ```caddyfile
@@ -210,10 +193,6 @@ example.com {
     import security_headers
     import rate_limits
     import geoip_block
-
-    defender block {
-        ranges openai deepseek
-    }
 
     route {
         crowdsec
