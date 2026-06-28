@@ -1,0 +1,11 @@
+# Accept-risk for vulnerabilities we cannot patch downstream.
+#
+# The caddy-crowdsec-bouncer plugin compiles github.com/crowdsecurity/crowdsec v1.6.3 into
+# the caddy binary. GHSA-rw47-hm26-6wr7 (high) is fixed in crowdsec 1.7.8, but the bouncer
+# plugin still pins the older release and forcing the bump via xcaddy breaks the build.
+# The finding stays visible in the Security tab (SARIF is still uploaded).
+# Revisit when caddy-crowdsec-bouncer ships against crowdsec >= 1.7.8.
+ignore:
+  - package:
+      name: github.com/crowdsecurity/crowdsec
+      type: go-module
