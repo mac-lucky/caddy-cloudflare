@@ -5,8 +5,7 @@ RUN xcaddy build \
     --with github.com/mholt/caddy-ratelimit \
     --with github.com/hslatman/caddy-crowdsec-bouncer/http \
     --with github.com/hslatman/caddy-crowdsec-bouncer/crowdsec \
-    --with github.com/porech/caddy-maxmind-geolocation \
-    --with github.com/crowdsecurity/crowdsec@v1.7.8
+    --with github.com/porech/caddy-maxmind-geolocation
 
 FROM caddy:latest
 
