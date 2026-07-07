@@ -1,3 +1,5 @@
+<img src="icon.svg" width="96" align="right" alt="">
+
 # Caddy with Cloudflare DNS & Security Plugins
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/maclucky/caddy-cloudflare)](https://hub.docker.com/r/maclucky/caddy-cloudflare)
