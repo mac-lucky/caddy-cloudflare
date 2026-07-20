@@ -9,6 +9,10 @@ RUN xcaddy build \
 
 FROM caddy:latest
 
+# caddy:latest (Alpine) lags on curl/libcurl security fixes; upgrade them so the
+# image clears the vulnerability gate (CVE-2026-5773, CVE-2026-6276).
+RUN apk --no-cache -U upgrade curl libcurl
+
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 LABEL org.opencontainers.image.source="https://github.com/mac-lucky/caddy-cloudflare"
