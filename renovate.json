@@ -18,6 +18,14 @@
       "matchStrings": ["ARG XTEXT_VERSION=(?<currentValue>\\S+)"],
       "depNameTemplate": "golang.org/x/text",
       "datasourceTemplate": "go"
+    },
+    {
+      "description": "Keep the grpc security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["ARG GRPC_VERSION=(?<currentValue>\\S+)"],
+      "depNameTemplate": "google.golang.org/grpc",
+      "datasourceTemplate": "go"
     }
   ],
   "packageRules": [
