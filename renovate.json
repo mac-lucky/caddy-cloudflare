@@ -1,0 +1,39 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>mac-lucky/actions-shared-workflows"],
+  "customManagers": [
+    {
+      "description": "Track the caddy release the image builds from",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["ARG CADDY_VERSION=(?<currentValue>\\S+)"],
+      "depNameTemplate": "caddyserver/caddy",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "description": "Keep the x/text security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["ARG XTEXT_VERSION=(?<currentValue>\\S+)"],
+      "depNameTemplate": "golang.org/x/text",
+      "datasourceTemplate": "go"
+    },
+    {
+      "description": "Keep the grpc security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["ARG GRPC_VERSION=(?<currentValue>\\S+)"],
+      "depNameTemplate": "google.golang.org/grpc",
+      "datasourceTemplate": "go"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Upstream minor and patch bumps ride the auto-tag release chain; majors wait for review",
+      "matchDepNames": ["caddyserver/caddy"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
+}

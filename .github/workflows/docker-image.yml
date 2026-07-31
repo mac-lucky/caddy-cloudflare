@@ -1,12 +1,11 @@
 name: Docker Image for Caddy with Cloudflare DNS
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   push:
     branches: [ "master" ]
-    paths-ignore:
-      - '.github/workflows/**'
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "master" ]
   workflow_dispatch:
 
 permissions:
@@ -25,11 +24,8 @@ jobs:
     with:
       app_name: "caddy-cloudflare"
       ghcr_image: "ghcr.io/mac-lucky/caddy-cloudflare"
-      upstream_repo: "caddyserver/caddy"
-      version_strip_prefix: "v"
-      build_arg_name: "CADDY_VERSION"
-      enable_version_check: true
-      enable_schedule_build: true
       enable_security_scan: true
-      platforms: "linux/amd64,linux/arm64"
       govulncheck_binary: "/usr/bin/caddy"
+      smoke_test_script: |
+        docker run --rm "$SMOKE_IMAGE" caddy version
+        docker run --rm "$SMOKE_IMAGE" caddy list-modules | grep -q dns.providers.cloudflare
