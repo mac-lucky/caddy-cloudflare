@@ -10,6 +10,14 @@
       "depNameTemplate": "caddyserver/caddy",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "description": "Keep the x/text security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["ARG XTEXT_VERSION=(?<currentValue>\\S+)"],
+      "depNameTemplate": "golang.org/x/text",
+      "datasourceTemplate": "go"
     }
   ],
   "packageRules": [
