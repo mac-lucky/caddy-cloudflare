@@ -1,6 +1,6 @@
 # Renovate tracks this against caddyserver/caddy releases; a merged bump
 # triggers the auto-tag workflow, and the tag builds the release.
-ARG CADDY_VERSION=2.11.4
+ARG CADDY_VERSION=2.11.4@sha256:844f60b64e4724a5aa8245e019dace0d3f199f7433ce6c57676cb30a920dbad9
 # Dependency floors raised at build time because the pinned caddy release and
 # the crowdsec bouncer plugin drag in vulnerable versions: x/text v0.37.0
 # carries GO-2026-5970 (fixed v0.39.0), grpc v1.81.0 carries
