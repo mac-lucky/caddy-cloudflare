@@ -7,7 +7,7 @@ ARG CADDY_VERSION=2.11.4
 # GHSA-hrxh-6v49-42gf (fixed v1.82.1). Renovate keeps both current, same as
 # gocryptfs-docker's XCRYPTO_VERSION.
 ARG XTEXT_VERSION=v0.41.0
-ARG GRPC_VERSION=v1.83.0
+ARG GRPC_VERSION=v1.83.1
 
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
