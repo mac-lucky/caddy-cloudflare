@@ -24,9 +24,10 @@ RUN xcaddy build \
 
 FROM caddy:${CADDY_VERSION}
 
-# The caddy base image (Alpine) lags on curl/libcurl security fixes; upgrade
-# them so the image clears the vulnerability gate (CVE-2026-5773, CVE-2026-6276).
-RUN apk --no-cache -U upgrade curl libcurl
+# The caddy base image (Alpine) lags on package security fixes (curl, libcurl,
+# libssl3, c-ares have all been behind at some point); upgrade everything so
+# the image clears the vulnerability gate instead of chasing package names.
+RUN apk --no-cache -U upgrade
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
