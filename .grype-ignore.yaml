@@ -1,0 +1,15 @@
+# Appended to the org Grype baseline by docker-cicd-reusable.yml (as text, so
+# the list items sit at the baseline's indent) and merged by scan-ghcr in
+# forgejo-fleet-ops for images whose source label points here.
+#
+# GHSA-2v4p-qf9q-27wj: grpc-go v1.84.0 carries the fix (the missing
+# :authority/Host rejection from grpc/grpc-go#9365 was backported to the 1.84
+# branch as #9370). The advisory's range only names the master pseudo-version,
+# so every 1.84.x scans as vulnerable. Pinned to the exact version so a bump is
+# re-evaluated; drop once the advisory is corrected.
+  - vulnerability: GHSA-2v4p-qf9q-27wj
+    package:
+      name: google.golang.org/grpc
+      version: v1.84.0
+      type: go-module
+      location: "/usr/bin/caddy"
