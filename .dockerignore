@@ -3,4 +3,3 @@
 .dockerignore
 README.md
 renovate.json
-.grype-ignore.yaml
