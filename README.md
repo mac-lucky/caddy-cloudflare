@@ -7,7 +7,7 @@
 [![GitHub Actions Workflow Status](https://github.com/mac-lucky/caddy-cloudflare/actions/workflows/docker-image.yml/badge.svg)](https://github.com/mac-lucky/caddy-cloudflare/actions/workflows/docker-image.yml)
 [![Platform](https://img.shields.io/badge/platform-amd64%20%7C%20arm64-blue)](https://github.com/mac-lucky/caddy-cloudflare/pkgs/container/caddy-cloudflare)
 
-This Docker image extends the official Caddy server with Cloudflare DNS plugin and comprehensive security plugins for protection against hackers, bots, and malicious traffic.
+This Docker image extends the official Caddy server with Cloudflare DNS plugin and security plugins that block hackers, bots and malicious traffic.
 
 ## Features
 
