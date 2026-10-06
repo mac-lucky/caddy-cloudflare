@@ -15,4 +15,5 @@ jobs:
       mode: upstream-arg
       arg_name: CADDY_VERSION
     secrets:
-      TAG_PUSH_TOKEN: ${{ secrets.TAG_PUSH_TOKEN }}
+      CI_APP_CLIENT_ID: ${{ secrets.CI_APP_CLIENT_ID }}
+      CI_APP_PRIVATE_KEY: ${{ secrets.CI_APP_PRIVATE_KEY }}
