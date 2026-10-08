@@ -28,4 +28,4 @@ jobs:
       govulncheck_binary: "/usr/bin/caddy"
       smoke_test_script: |
         docker run --rm "$SMOKE_IMAGE" caddy version
-        docker run --rm "$SMOKE_IMAGE" caddy list-modules | grep -q dns.providers.cloudflare
+        docker run --rm "$SMOKE_IMAGE" caddy list-modules | grep dns.providers.cloudflare >/dev/null
