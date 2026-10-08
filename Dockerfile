@@ -27,6 +27,8 @@ FROM caddy:${CADDY_VERSION}
 # The caddy base image (Alpine) lags on package security fixes (curl, libcurl,
 # libssl3, c-ares have all been behind at some point); upgrade everything so
 # the image clears the vulnerability gate instead of chasing package names.
+# PKG_REFRESH is new on every CI build, so this RUN never comes from the layer cache.
+ARG PKG_REFRESH
 RUN apk --no-cache -U upgrade
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
