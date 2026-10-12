@@ -40,6 +40,18 @@
       ],
       "depNameTemplate": "google.golang.org/grpc",
       "datasourceTemplate": "go"
+    },
+    {
+      "description": "Keep the x/net security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)Dockerfile$/"
+      ],
+      "matchStrings": [
+        "ARG XNET_VERSION=(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "golang.org/x/net",
+      "datasourceTemplate": "go"
     }
   ],
   "packageRules": [

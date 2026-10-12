@@ -4,15 +4,20 @@ ARG CADDY_VERSION=2.11.7
 # Dependency floors raised at build time because the pinned caddy release and
 # the crowdsec bouncer plugin drag in vulnerable versions: x/text v0.37.0
 # carries GO-2026-5970 (fixed v0.39.0), grpc v1.81.0 carries
-# GHSA-hrxh-6v49-42gf (fixed v1.82.1). Renovate keeps both current, same as
-# gocryptfs-docker's XCRYPTO_VERSION.
+# GHSA-hrxh-6v49-42gf (fixed v1.82.1), x/net v0.59.0 carries GO-2026-6603,
+# GO-2026-6610, GO-2026-6611 and GO-2026-6612 (fixed v0.60.0). Renovate keeps
+# all three current, same as gocryptfs-docker's XCRYPTO_VERSION. x/net goes in
+# through its http2 package: xcaddy imports what --with names, and the module
+# root has no Go package.
 ARG XTEXT_VERSION=v0.42.0
 ARG GRPC_VERSION=v1.84.0
+ARG XNET_VERSION=v0.60.0
 
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
 ARG XTEXT_VERSION
 ARG GRPC_VERSION
+ARG XNET_VERSION
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare \
     --with github.com/mholt/caddy-ratelimit \
@@ -20,7 +25,8 @@ RUN xcaddy build \
     --with github.com/hslatman/caddy-crowdsec-bouncer/crowdsec \
     --with github.com/porech/caddy-maxmind-geolocation \
     --with golang.org/x/text@${XTEXT_VERSION} \
-    --with google.golang.org/grpc@${GRPC_VERSION}
+    --with google.golang.org/grpc@${GRPC_VERSION} \
+    --with golang.org/x/net/http2@${XNET_VERSION}
 
 FROM caddy:${CADDY_VERSION}
 
