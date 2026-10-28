@@ -52,6 +52,18 @@
       ],
       "depNameTemplate": "golang.org/x/net",
       "datasourceTemplate": "go"
+    },
+    {
+      "description": "Keep the go-jose security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)Dockerfile$/"
+      ],
+      "matchStrings": [
+        "ARG GO_JOSE_VERSION=(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "github.com/go-jose/go-jose/v4",
+      "datasourceTemplate": "go"
     }
   ],
   "packageRules": [
