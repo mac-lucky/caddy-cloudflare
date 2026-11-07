@@ -64,6 +64,18 @@
       ],
       "depNameTemplate": "github.com/go-jose/go-jose/v4",
       "datasourceTemplate": "go"
+    },
+    {
+      "description": "Keep the klauspost/compress security floor current in the xcaddy build",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)Dockerfile$/"
+      ],
+      "matchStrings": [
+        "ARG COMPRESS_VERSION=(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "github.com/klauspost/compress",
+      "datasourceTemplate": "go"
     }
   ],
   "packageRules": [
