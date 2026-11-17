@@ -11,7 +11,7 @@ ARG CADDY_VERSION=2.11.9
 # same as gocryptfs-docker's XCRYPTO_VERSION. x/net goes in through its http2
 # package: xcaddy imports what --with names, and the module root has no Go
 # package.
-ARG XTEXT_VERSION=v0.43.0
+ARG XTEXT_VERSION=v0.44.0
 ARG GRPC_VERSION=v1.85.0
 ARG XNET_VERSION=v0.62.0
 ARG GO_JOSE_VERSION=v4.1.9
